@@ -1,5 +1,7 @@
 # Meu Portfólio Profissional
 
+> **Acesse o site oficial no ar:** [Clique aqui para visualizar o projeto](https://portfolio-mnw.vercel.app)
+
 Este é o repositório do meu portfólio pessoal, desenvolvido para centralizar meus principais projetos, habilidades e experiências na área de Tecnologia da Informação. O objetivo principal deste projeto é apresentar meu trabalho de forma clara, moderna e performática para recrutadores e profissionais do mercado.
 
 ---
@@ -27,13 +29,3 @@ Durante o ciclo de desenvolvimento, ferramentas baseadas em modelos de linguagem
 * **Resolução de Problemas:** Auxílio no diagnóstico ágil de erros e testes de compatibilidade em ambientes locais.
 
 Essa abordagem demonstra não apenas competência técnica nas linguagens de programação, mas também a habilidade de governar e direcionar ferramentas de IA generativa para maximizar a produtividade e a entrega de valor tecnológico.
-
----
-
-## Como Rodar o Projeto Localmente
-
-Se você deseja clonar este repositório e executá-lo em sua máquina, siga os passos abaixo:
-
-1. **Clone o repositório:**
-```bash
-   git clone https://github.com/matheusnw1/Portfolio.git
