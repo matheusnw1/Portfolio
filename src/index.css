@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Linear/Vercel-style dark portfolio utilities ===== */
+.font-mono-bp { font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace; }
+
+.bp-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.bp-grid-fine {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* Mouse-tracking ambient glow card */
+.glow-card {
+  position: relative;
+  background: #09090b;
+  border: 1px solid #1f1f23;
+  transition: border-color 220ms ease, transform 260ms ease, background-color 260ms ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(0, 60, 194, 0.12),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 260ms ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-card > * { position: relative; z-index: 1; }
+.glow-card:hover {
+  border-color: #2a2a30;
+  transform: scale(1.01);
+  background: #0b0b0e;
+}
+.glow-card:hover::before { opacity: 1; }
+
+/* Ambient page glow (mouse follower in hero) */
+.ambient-glow {
+  position: absolute;
+  pointer-events: none;
+  width: 640px; height: 640px;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(0,60,194,0.20), transparent 70%);
+  transform: translate(-50%, -50%);
+  filter: blur(20px);
+  z-index: 0;
+}
+
+/* Subtle blue underline accent */
+.accent-blue { color: #3b6bd6; }
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 96%;
+
+    --card: 240 6% 6%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 240 6% 6%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 222 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4% 10%;
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 240 4% 10%;
+    --muted-foreground: 240 3% 55%;
+
+    --accent: 240 4% 12%;
+    --accent-foreground: 0 0% 96%;
+
+    --destructive: 345 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    --info: 199 89% 55%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 240 4% 14%;
+    --input: 240 4% 14%;
+    --ring: 222 100% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 3%;
+    --sidebar-foreground: 0 0% 70%;
+    --sidebar-primary: 222 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 10%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 240 4% 14%;
+    --sidebar-ring: 222 100% 50%;
+
+    --severity-critical: 345 80% 55%;
+    --severity-high: 25 95% 58%;
+    --severity-medium: 38 92% 55%;
+    --severity-low: 142 70% 45%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 96%;
+    --card: 240 6% 6%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 6% 6%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 222 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4% 10%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 4% 10%;
+    --muted-foreground: 240 3% 55%;
+    --accent: 240 4% 12%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 345 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 4% 14%;
+    --input: 240 4% 14%;
+    --ring: 222 100% 50%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html, html.dark { background-color: #000000; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #000;
+  }
+  h1, h2, h3, h4, h5, h6 { @apply font-medium tracking-tight; font-family: 'Geist', 'Inter', sans-serif; }
+  ::selection { background: rgba(0,60,194,0.40); color: #fff; }
+}
