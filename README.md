@@ -36,4 +36,4 @@ Se você deseja clonar este repositório e executá-lo em sua máquina, siga os 
 
 1. **Clone o repositório:**
 ```bash
-   git clone [https://github.com/matheusnw1/Portfolio.git](https://github.com/matheusnw1/Portfolio.git)
+   git clone https://github.com/matheusnw1/Portfolio.git
