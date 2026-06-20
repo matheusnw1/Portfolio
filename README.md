@@ -35,5 +35,5 @@ Essa abordagem demonstra não apenas competência técnica nas linguagens de pro
 Se você deseja clonar este repositório e executá-lo em sua máquina, siga os passos abaixo:
 
 1. **Clone o repositório:**
-   ```bash
+```bash
    git clone [https://github.com/matheusnw1/Portfolio.git](https://github.com/matheusnw1/Portfolio.git)
