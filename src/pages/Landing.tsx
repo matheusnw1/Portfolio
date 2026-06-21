@@ -32,7 +32,7 @@ const Landing = () => {
   }, []);
 
   const isDark = theme === "dark";
-  const diagonalLineColor = isDark ? "hsl(240 4% 26%" : "hsl(240 4% 80%";
+  const diagonalLineColor = isDark ? "hsl(240 4% 26%)" : "hsl(240 4% 80%)";
 
   useEffect(() => {
     const root = document.documentElement;
@@ -48,7 +48,7 @@ const Landing = () => {
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
       <nav className="fixed top-0 z-50 w-full bg-background border-b border-border px-6">
-        <div className="mx-auto flex h-[56px] max-w-[1200px] items-center justify-between">
+        <div className="mx-auto flex h-[56px] max-w-[1440px] items-center justify-between">
           <Link to="/" className="flex items-center gap-2 -ml-0.5">
             <StackedLogo size={16} />
             <span className="text-[14px] font-bold text-foreground tracking-[0.08em] uppercase">Triage</span>
@@ -77,21 +77,21 @@ const Landing = () => {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 pt-16 pb-0 px-6 overflow-hidden">
-        <div className="mx-auto max-w-[1200px] relative">
+      <section className="relative z-10 pt-20 pb-0 px-6 overflow-hidden">
+        <div className="mx-auto max-w-[1440px] relative">
           {/* Two-column hero: text left, cube right */}
-          <div className="pt-[52px] pb-16 relative flex">
+          <div className="pt-[52px] pb-16 relative flex items-center justify-between gap-12">
             {/* Left column — text */}
-            <div className="relative z-[3] flex-1 min-w-0 max-w-[540px]">
-              <h1 className="text-[clamp(2rem,4vw,3.2rem)] font-[500] leading-[1.08] tracking-[-0.04em] text-foreground max-w-[540px]">
+            <div className="relative z-[3] flex-1 min-w-0 max-w-[680px]">
+              <h1 className="text-[clamp(2.2rem,5vw,3.8rem)] font-[500] leading-[1.05] tracking-[-0.04em] text-foreground">
                 Bug tracking for teams that ship fast
               </h1>
-              <p className="mt-6 text-base leading-relaxed text-muted-foreground max-w-[420px]">
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground max-w-[520px]">
                 Purpose-built for engineering teams. Triage, track, and resolve issues without slowing down.
               </p>
               <div className="mt-10 flex items-center gap-4">
                 <Link to="/auth">
-                  <button className="group relative inline-flex items-center gap-2 px-6 py-3 text-[14px] font-medium bg-foreground text-background transition-all duration-200 hover:bg-foreground/90">
+                  <button className="group relative inline-flex items-center gap-2 px-7 py-3.5 text-[15px] font-medium bg-foreground text-background transition-all duration-200 hover:bg-foreground/90">
                     Get started free
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </button>
@@ -230,7 +230,7 @@ const Landing = () => {
 
       {/* Features */}
       <section className="relative z-10 pt-24 pb-24 px-6 overflow-hidden">
-        <div className="mx-auto max-w-[1200px] relative">
+        <div className="mx-auto max-w-[1440px] relative">
           <p className="text-[13px] uppercase tracking-[0.15em] text-muted-foreground mb-4">
             Built for speed
           </p>
@@ -328,7 +328,7 @@ const Landing = () => {
             backgroundSize: "100% 100%",
           }}
         />
-        <div className="mx-auto max-w-[1200px] relative">
+        <div className="mx-auto max-w-[1440px] relative">
           <div className="border border-border bg-background p-10 max-w-[720px] mx-auto">
             <blockquote className="text-[20px] font-[400] leading-[1.5] tracking-[-0.01em] text-foreground/85">
               "We replaced three tools with one. Mean time to resolution dropped 40% in the first month. The team actually uses it — that's the real win."
@@ -349,7 +349,7 @@ const Landing = () => {
 
       {/* CTA */}
       <section className="relative z-10 pt-32 pb-40 px-6 overflow-hidden">
-        <div className="mx-auto max-w-[1200px] text-center relative">
+        <div className="mx-auto max-w-[1440px] text-center relative">
           <h2 className="text-[clamp(2rem,4vw,3.2rem)] font-[500] tracking-[-0.035em] text-foreground leading-[1.1] mx-auto max-w-[560px]">
             Your bugs aren't going to track themselves.
           </h2>
@@ -371,7 +371,7 @@ const Landing = () => {
 
       {/* Footer */}
       <div className="relative z-10 border-t border-border">
-        <div className="mx-auto max-w-[1200px] px-6 py-6 flex items-center justify-between">
+        <div className="mx-auto max-w-[1440px] px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-2 -ml-0.5">
             <StackedLogo size={16} />
             <span className="text-[12px] font-bold text-foreground uppercase tracking-[0.08em]">Triage</span>

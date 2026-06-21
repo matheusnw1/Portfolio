@@ -19,6 +19,8 @@ import {
 
 const BLUE = "#003CC2";
 const BLUE_SOFT = "#3b6bd6";
+const GRAY = "#79797960";
+const BLACK = "#00000060";
 
 const nav = [
   { id: "about", label: "About" },
@@ -42,13 +44,26 @@ function GlowCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   return (
-    <As
+<As
       ref={ref}
       onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => {
         const el = e.currentTarget as HTMLElement;
         const r = el.getBoundingClientRect();
-        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        el.style.setProperty("--my", `${e.clientY - r.top}px`);
+        
+        // Fator de 120% de zoom
+        const zoomFactor = 1.2;
+        
+        // Multiplicamos a posição da caixa pelo zoom para bater certo com o clientX real do ecrã
+        // Ou dividimos o cálculo final por completo. Tenta esta fórmula:
+        // const mouseX = e.clientX - r.left * zoomFactor;
+        // const mouseY = e.clientY - r.top * zoomFactor;
+        
+        // Se a de cima ainda falhar por poucos píxeis, usa esta alternativa:
+        const mouseX = (e.clientX / zoomFactor) - r.left;
+        const mouseY = (e.clientY / zoomFactor) - r.top;
+
+        el.style.setProperty("--mx", `${mouseX}px`);
+        el.style.setProperty("--my", `${mouseY}px`);
       }}
       className={`glow-card rounded-lg ${className}`}
     >
@@ -108,13 +123,12 @@ function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
         <a href="#top" className="flex items-center gap-2.5">
           <span
-            className="grid h-7 w-7 place-items-center rounded-md text-[11px] font-semibold tracking-tight text-white"
-            style={{ background: BLUE }}
+            className="grid h-7 w-7 place-items-center rounded-md text-[15px] font-semibold tracking-tight text-white bg-black-900"
           >
             NW
           </span>
           <span className="font-mono-bp text-[12px] tracking-tight text-zinc-200">
-            NW<span style={{ color: BLUE_SOFT }}>.</span>
+            <span></span>
           </span>
         </a>
 
@@ -131,14 +145,17 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* 1. BOTÃO DESKTOP (Computador) - Atualizado com o seu PDF */}
           <a
-            href="#"
-            className="hidden items-center gap-1.5 rounded-md px-3.5 py-2 text-[12.5px] font-medium text-white transition-transform hover:scale-[1.02] md:inline-flex"
+            href="/Curriculo-MatheusNavarro.pdf"
+            download="Matheus_Navarro_Wenceslau_Curriculo.pdf"
+            className="hidden items-center gap-1.5 rounded-md px-3.5 py-2 text-[12.5px] font-medium text-white transition-all active:scale-[0.98] md:inline-flex cursor-pointer"
             style={{ background: BLUE }}
           >
             <Download className="h-3.5 w-3.5" />
             Baixar Currículo
           </a>
+          
           <button
             onClick={() => setOpen(!open)}
             className="grid h-9 w-9 place-items-center rounded-md border border-zinc-800 text-zinc-300 md:hidden"
@@ -148,6 +165,8 @@ function Header() {
           </button>
         </div>
       </div>
+      
+      {/* MENU MOBILE (Celular) */}
       {open && (
         <div className="border-t border-zinc-900 bg-black px-6 py-4 md:hidden">
           <div className="flex flex-col gap-1">
@@ -161,9 +180,11 @@ function Header() {
                 {n.label}
               </a>
             ))}
+            {/* 2. BOTÃO MOBILE - Também atualizado com o seu PDF */}
             <a
-              href="#"
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium text-white"
+              href="/Curriculo-MatheusNavarro.pdf"
+              download="Matheus_Navarro_Wenceslau_Curriculo.pdf"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium text-white cursor-pointer"
               style={{ background: BLUE }}
             >
               <Download className="h-4 w-4" /> Baixar Currículo
@@ -248,18 +269,30 @@ function TypingCode() {
 
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  
+useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    
     const handler = (e: MouseEvent) => {
       const r = el.getBoundingClientRect();
       const glow = el.querySelector(".ambient-glow") as HTMLElement | null;
+      
       if (glow) {
-        glow.style.left = `${e.clientX - r.left}px`;
-        glow.style.top = `${e.clientY - r.top}px`;
+        const zoomFactor = 1.2;
+        const mouseX = (e.clientX / zoomFactor) - r.left;
+        const mouseY = (e.clientY / zoomFactor) - r.top;
+
+        // AQUI A CORREÇÃO: Garante que o brilho do fundo nunca bloqueie os cliques do usuário
+        glow.style.pointerEvents = "none";
+        
+        glow.style.left = `${mouseX}px`;
+        glow.style.top = `${mouseY}px`;
       }
     };
-    el.addEventListener("mousemove", handler);
+    
+    // Usamos { passive: true } para que o navegador saiba que esse evento não vai travar cliques ou interações
+    el.addEventListener("mousemove", handler, { passive: true });
     return () => el.removeEventListener("mousemove", handler);
   }, []);
 
@@ -275,7 +308,7 @@ function Hero() {
             <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-950/70 px-3 py-1">
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: BLUE_SOFT, boxShadow: `0 0 12px ${BLUE_SOFT}` }} />
               <span className="font-mono-bp text-[10.5px] uppercase tracking-[0.22em] text-zinc-400">
-                Open to opportunities · Estágio 2026
+                Aberto para Oportunidades · Estágio 2026
               </span>
             </div>
 
@@ -291,7 +324,7 @@ function Hero() {
 
             <p className="mt-7 max-w-2xl text-base leading-relaxed text-zinc-400 md:text-[15.5px]">
               Construindo soluções de dados e inteligência artificial tecnicamente
-              sólidas e eticamente responsáveis — para que a tecnologia
+              sólidas e eticamente responsáveis, para que a tecnologia
               <span className="text-zinc-200"> amplie</span> a capacidade humana,
               em vez de substituí-la sem critério.
             </p>
@@ -323,7 +356,7 @@ function Hero() {
                   ["foco", "Data / ML / Cloud"],
                   ["nível", "Estudante · Júnior"],
                   ["local", "Brasil"],
-                  ["status", "Open to work"],
+                  ["status", "Aberto para trabalhar"],
                 ].map(([k, v]) => (
                   <div key={k} className="flex items-center justify-between border-b border-dashed border-zinc-900 pb-2 last:border-none">
                     <dt className="text-zinc-500">{k}</dt>
@@ -372,13 +405,13 @@ function About() {
       icon: Compass,
       label: "Visão",
       text:
-        "Percorrer a jornada até virar Engenheiro de Machine Learning — começando por uma base forte em dados (SQL, ETL, cloud, análise) e usando esse caminho como ponte para projetos de ML aplicados e, no longo prazo, para neurotecnologia e BCIs.",
+        "Percorrer a jornada até virar Engenheiro de Machine Learning, começando por uma base forte em dados (SQL, ETL, cloud, análise) e usando esse caminho como ponte para projetos de ML aplicados e, no longo prazo, para neurotecnologia e BCIs.",
     },
     {
       icon: Flag,
       label: "Propósito",
       text:
-        "Tornar-me um profissional que resolve problemas reais com dados — não só fazer um dashboard bonito, mas entender o problema de negócio. Automação, análise preditiva e, eventualmente, a fronteira entre IA e biologia humana.",
+        "Tornar-me um profissional que resolve problemas reais com dados, não só fazer um dashboard bonito, mas entender o problema de negócio. Automação, análise preditiva e, eventualmente, a fronteira entre IA e biologia humana.",
     },
   ];
 
@@ -421,7 +454,7 @@ function About() {
         <GlowCard className="p-6 md:col-span-3">
           <Label>Por que Dados & ML</Label>
           <p className="mt-4 text-[14px] leading-relaxed text-zinc-400">
-            Dados e ML unem lógica, matemática e impacto prático visível — dá para
+            Dados e ML unem lógica, matemática e impacto prático visível, dá para
             ver o resultado do que se constrói. Cheguei a essa área depois de
             considerar cibersegurança, cloud/DevOps e pesquisa em IA, e converti
             porque é o caminho de entrada mais viável,{" "}
@@ -443,7 +476,7 @@ function SWOT() {
       items: [
         "Facilidade com lógica e raciocínio estruturado",
         "Persistência em problemas difíceis",
-        "Curiosidade genuína — pergunto 'por quê', não só 'como'",
+        "Curiosidade genuína, pergunto 'por quê', não só 'como'",
         "Aprendizado fazendo (projetos reais > só cursos)",
         "Base técnica de TI no ensino médio",
       ],
@@ -554,7 +587,7 @@ function Skills() {
   const toDev = [
     { name: "AWS (Lambda, S3)", level: 35, why: "Infraestrutura cloud aplicada a dados via projetos reais." },
     { name: "Power BI & Power Automate", level: 40, why: "Visualização e automação de processos por prática direta." },
-    { name: "Estatística & ML", level: 25, why: "Regressão, classificação, avaliação — datasets reais (Kaggle) + papers." },
+    { name: "Estatística & ML", level: 25, why: "Regressão, classificação, avaliação, datasets reais (Kaggle) + papers." },
     { name: "Inglês técnico", level: 60, why: "Documentação avançada e comunidades internacionais." },
   ];
   const softCurrent = [
@@ -781,13 +814,13 @@ function Market() {
       id: "ai",
       title: "Impacto da IA",
       body:
-        "Pretendo usar IA como ferramenta de produtividade e aprendizado — para acelerar tarefas repetitivas (documentação, boilerplate, debugging inicial) — sem terceirizar o entendimento dos fundamentos. A IA pode automatizar parte da limpeza de dados e geração de relatórios, mas a interpretação de negócio e a responsabilidade ética continuam sendo minhas.",
+        "Pretendo usar IA como ferramenta de produtividade e aprendizado, para acelerar tarefas repetitivas (documentação, boilerplate, debugging inicial), sem terceirizar o entendimento dos fundamentos. A IA pode automatizar parte da limpeza de dados e geração de relatórios, mas a interpretação de negócio e a responsabilidade ética continuam sendo minhas.",
     },
     {
       id: "junior",
       title: "Desafios de Iniciante",
       body:
-        "A exigência de 'experiência prévia' para vagas júnior é um paradoxo conhecido — um portfólio de projetos reais e bem documentados (não apenas exercícios de curso) é a forma mais concreta de contornar isso: prova de capacidade quando ainda não há histórico profissional extenso.",
+        "A exigência de 'experiência prévia' para vagas júnior é um paradoxo conhecido, um portfólio de projetos reais e bem documentados (não apenas exercícios de curso) é a forma mais concreta de contornar isso: prova de capacidade quando ainda não há histórico profissional extenso.",
     },
   ];
 
@@ -924,27 +957,26 @@ function Projects() {
   const items = [
     {
       id: "01",
-      title: "ETL Pipeline · Vendas Multi-canal",
-      stack: ["Python", "SQL", "AWS S3", "Lambda"],
+      title: "Vibefy · Recomendador de Música por Humor",
+      stack: ["Python", "Flask", "JavaScript", "LLM (OpenRouter)", "iTunes API"],
       desc:
-        "Pipeline ETL serverless que consolida vendas de múltiplos canais em data lake S3, com validação de schema e logs estruturados.",
-      code: `def extract(source):\n    rows = read_s3(source)\n    return validate(rows, schema)\n\ndef load(rows):\n    s3.put(\"lake/sales\", rows)`,
+        "Aplicação web que recomenda músicas com base no humor do usuário, usando um LLM via OpenRouter para interpretar a entrada e a API do iTunes para buscar as faixas. Backend em Flask, deploy no Render.",
+      code: `def recommend(mood):\n    prompt = build_prompt(mood)\n    suggestions = llm.complete(prompt)\n    return itunes.search(suggestions)`,
     },
     {
       id: "02",
-      title: "Modelo de Churn · Telecom",
-      stack: ["Python", "scikit-learn", "Pandas"],
+      title: "Dashboard de Monitoramento de Ativos Financeiros",
+      stack: ["Python", "AWS Lambda", "S3", "SQL", "Power BI", "Power Automate"],
       desc:
-        "Classificador de churn com pipeline completo: análise exploratória, feature engineering, baseline + gradient boosting e avaliação por AUC/F1.",
-      code: `model = GradientBoostingClassifier()\nmodel.fit(X_train, y_train)\nauc = roc_auc_score(y_test, model.predict_proba(X_test)[:,1])`,
+        "Pipeline que coleta dados de ativos financeiros via API da Brapi, processa em AWS Lambda, armazena no S3, estrutura em SQL e exibe em painel Power BI, com automações via Power Automate.",
+      code: `def fetch_assets():\n    data = brapi.get_quotes(tickers)\n    s3.put(\"assets/raw\", data)\n    return data`,
     },
     {
       id: "03",
-      title: "Dashboard · Indicadores Cloud",
-      stack: ["Power BI", "SQL", "DAX"],
-      desc:
-        "Painel executivo com indicadores de consumo cloud, alertas de anomalia e drill-down por workload e equipe.",
-      code: `Cost YTD = CALCULATE(\n  SUM('cloud'[cost_usd]),\n  DATESYTD('date'[date])\n)`,
+      title: "Portfólio Profissional · Hub de Projetos",
+      stack: ["React", "Vite", "TypeScript", "Tailwind CSS"],
+      desc: "Minha vitrine oficial de desenvolvimento. Um ecossistema responsivo construído para centralizar meus principais projetos de dados e software, demonstrando domínio em arquitetura front-end moderna.",
+      code: `export const Portfolio = () => {\n  return (\n    <div className="flex flex-col gap-6">\n      <MyProjects />\n    </div>\n  );\n};`,
     },
   ];
 
@@ -987,12 +1019,11 @@ function Projects() {
                 >
                   <Github className="h-3.5 w-3.5" /> Code
                 </a>
-                <a
+                <a 
                   href="#"
                   className="font-mono-bp inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest hover:underline"
                   style={{ color: BLUE_SOFT }}
-                >
-                  <ExternalLink className="h-3.5 w-3.5" /> Deploy
+                > 
                 </a>
               </div>
             </div>
@@ -1012,10 +1043,9 @@ function Footer() {
         <div>
           <div className="flex items-center gap-2.5">
             <span
-              className="grid h-7 w-7 place-items-center rounded-md text-[11px] font-medium text-white"
-              style={{ background: BLUE }}
+              className="grid h-7 w-7 place-items-center rounded-md text-[15px] font-medium text-white bg-black-900"
             >
-              M
+              NW
             </span>
             <span className="text-[15px] font-medium text-zinc-100">Matheus Navarro Wenceslau</span>
           </div>
@@ -1043,9 +1073,12 @@ function Footer() {
           >
             <Github className="h-4 w-4" />
           </a>
+          
+          {/* BOTÃO DO CURRÍCULO NO FOOTER - Configurado com o seu arquivo */}
           <a
-            href="#"
-            className="inline-flex items-center gap-1.5 rounded-md px-3.5 py-2.5 text-[12.5px] font-medium text-white transition-transform hover:scale-[1.02]"
+            href="/Curriculo-MatheusNavarro.pdf"
+            download="Matheus_Navarro_Wenceslau_Curriculo.pdf"
+            className="inline-flex items-center gap-1.5 rounded-md px-3.5 py-2.5 text-[12.5px] font-medium text-white transition-all active:scale-[0.98] cursor-pointer"
             style={{ background: BLUE }}
           >
             <Download className="h-3.5 w-3.5" /> Currículo

@@ -163,3 +163,7 @@
   h1, h2, h3, h4, h5, h6 { @apply font-medium tracking-tight; font-family: 'Geist', 'Inter', sans-serif; }
   ::selection { background: rgba(0,60,194,0.40); color: #fff; }
 }
+
+html {
+  zoom: 120%;
+}
